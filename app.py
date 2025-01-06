@@ -320,7 +320,7 @@
 
 import os
 import pandas as pd
-from flask import Flask, render_template, request, send_file
+from flask import Flask, render_template, request, send_from_directory
 import pickle
 import gzip
 from feature_engineering import preprocess_and_engineer_features  # Import feature engineering
@@ -395,9 +395,9 @@ def upload_file():
                 print(f"Created directory: {uploads_dir}")
 
             # Save the processed DataFrame as a new CSV file
-            output_file_path = os.path.join(uploads_dir, 'processed_data.csv')  # Save in the 'uploads' folder
-            df.to_csv(output_file_path, index=False)
-            print(f"Processed file saved to {output_file_path}")
+            output_filepath = os.path.join('static', 'uploads', 'processed_file.csv')  # Save in the 'uploads' folder
+            df.to_csv(output_filepath, index=False)
+            print(f"Processed file saved to {output_filepath}")
 
             # output_file_path = os.path.join('static', 'processed_data.csv')  # Save in a static folder or any location of your choice
             # df.to_csv(output_file_path, index=False)
@@ -426,15 +426,10 @@ def upload_file():
 
 
 
-@app.route('/download', methods=['GET'])
-def download_file():
-    # Path to the processed CSV file in 'uploads' folder
-    file_path = os.path.join('uploads', 'processed_data.csv')
-    try:
-        return send_file(file_path, as_attachment=True)
-    except Exception as e:
-        print(f"Error sending file: {e}")
-        return render_template('error.html', error_message="Error during file download.")
+app.route('/download/<filename>')
+def download_file(filename):
+    # Ensure the file exists in the 'static/uploads' directory
+    return send_from_directory(os.path.join(app.root_path, 'static', 'uploads'), filename)
 
 
 if __name__ == '__main__':
