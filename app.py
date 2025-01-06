@@ -367,6 +367,7 @@ def upload_file():
         try:
             # Read the CSV file into a DataFrame
             df = pd.read_csv(file)
+            orignal_df=df.copy()
             print(f"CSV Data:\n{df.head()}")  # Check if the CSV is loaded correctly
 
             # Ensure the necessary columns are present
@@ -392,22 +393,22 @@ def upload_file():
             df['Percentage'] = y_prob_holdout * 100
             df['Status'] = (y_prob_holdout >= 0.5).astype(int)
             df['Status'] = df['Status'].map({1: 'Delayed', 0: 'On Time'})
+            processed_file_name = f"results_{file.filename}"
+            processed_file_path = os.path.join(app.config['PROCESSED_FOLDER'], processed_file_name)
+
+            print(f"Processed file will be saved to: {processed_file_path}")
+            columns_to_append = df[['Percentage', 'Status']]
+            final_df = pd.concat([orignal_df, columns_to_append], axis=1)
+            final_df.to_csv(processed_file_path, index=False)
+
+            message = f"The final CSV file has been saved in the processed folder as: {processed_file_name}"
+
+            return render_template('results.html', file_name = processed_file_name ,message = message)
+        except Exception as e:
+            return f"Error during processing: {e}"
+    return render_template('upload.html')
 
 
- # Create a dynamic directory based on the current timestamp or file name
-            timestamp = int(time.time())
-            dynamic_dir = os.path.join(app.config['UPLOAD_FOLDER'], str(timestamp))
-            if not os.path.exists(dynamic_dir):
-                os.makedirs(dynamic_dir)
-                print(f"Created dynamic directory: {dynamic_dir}")
-
-            # Save the processed DataFrame as a new CSV file
-            output_filepath = os.path.join(dynamic_dir, 'processed_file.csv')
-            processed_data.to_csv(output_filepath, index=False)
-            print(f"Processed file saved to {output_filepath}")
-
-            # Return a link to download the processed file
-            return render_template('results.html', filename=f"{timestamp}/processed_file.csv")
 
             # output_file_path = os.path.join('static', 'processed_data.csv')  # Save in a static folder or any location of your choice
             # df.to_csv(output_file_path, index=False)
@@ -428,20 +429,14 @@ def upload_file():
             # print(f"Predictions: {predictions}")  # See the final predictions
             # return render_template('results.html', predictions=predictions)
 
-        except Exception as e:
-            print(f"Error during prediction: {e}")
-            return render_template('error.html', error_message="An error occurred during prediction.")
-    else:
-        return render_template('error.html', error_message="Invalid file format. Please upload a CSV file.")
 
-
-@app.route('/download/<path:filename>')
+@app.route('/download/<filename>')
 def download_file(filename):
-    file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-    if os.path.exists(file_path):
-        return send_file(file_path, as_attachment=True)
-    else:
-        return render_template('error.html', error_message="File not found.")
+    file_path = os.path.join(app.config['PROCESSED_FOLDER'], filename)
+    print(f"Attempting to download file from: {file_path}")  # Debugging
+    if not os.path.exists(file_path):
+        return f"Error: File not found at {file_path}"
+    return send_file(file_path, as_attachment=True)
 
 
 
