@@ -64,7 +64,7 @@
 </html> -->
 
 
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -76,5 +76,26 @@
     <p>Results have been processed successfully. You can download the processed CSV file from the link below:</p>
     
     <a href="{{ download_link }}" download>Download Processed CSV</a>
+</body>
+</html> -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Results</title>
+</head>
+<body>
+    <h1>Processing Complete</h1>
+    <p>{{ message }}</p>
+
+    <a href="{{ url_for('download_file', filename=file_name) }}">Download processed file</a>
+
+
+    <a href="{{ url_for('home') }}">Go back to Home</a>
+
+    
 </body>
 </html>
