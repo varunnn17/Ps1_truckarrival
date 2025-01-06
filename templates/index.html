@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediction Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f4f4f4;
+        }
+        .form-container {
+            width: 100%;
+            max-width: 600px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .form-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .form-group input:focus {
+            border-color: #007BFF;
+            outline: none;
+        }
+        .form-group button {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .form-group button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>Truck Arrival Time Prediction</h2>
+        <form action="/predict" method="post">
+            <div class="form-group">
+                <label for="Date">Date:</label>
+                <input type="datetime-local" id="Date" name="Date" required>
+            </div>
+
+            <div class="form-group">
+                <label for="Trip Nr">Trip Nr:</label>
+                <input type="text" id="Trip Nr" name="Trip Nr" required>
+            </div>
+
+            <div class="form-group">
+                <label for="Ordertype">Ordertype:</label>
+                <input type="text" id="Ordertype" name="Ordertype" required>
+            </div>
+
+            <div class="form-group">
+                <label for="PlannedDateTime">PlannedDateTime:</label>
+                <input type="datetime-local" id="PlannedDateTime" name="PlannedDateTime" required>
+            </div>
+
+            <div class="form-group">
+                <label for="PlannedDay">PlannedDay:</label>
+                <input type="text" id="PlannedDay" name="PlannedDay" required>
+            </div>
+
+            <div class="form-group">
+                <label for="PlannedHour">PlannedHour:</label>
+                <input type="text" id="PlannedHour" name="PlannedHour" required>
+            </div>
+
+            <div class="form-group">
+                <label for="CustomerID">CustomerID:</label>
+                <input type="text" id="CustomerID" name="CustomerID" required>
+            </div>
+
+            <div class="form-group">
+                <label for="RelationID">RelationID:</label>
+                <input type="text" id="RelationID" name="RelationID" required>
+            </div>
+
+            <div class="form-group">
+                <label for="CarrierID">CarrierID:</label>
+                <input type="text" id="CarrierID" name="CarrierID" required>
+            </div>
+
+            <div class="form-group">
+                <label for="NumberOfOrders">NumberOfOrders:</label>
+                <input type="number" id="NumberOfOrders" name="NumberOfOrders" required>
+            </div>
+
+            <div class="form-group">
+                <button type="submit">Predict</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
