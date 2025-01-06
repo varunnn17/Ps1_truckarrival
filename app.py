@@ -319,6 +319,7 @@
 
 
 import os
+import time
 import pandas as pd
 from flask import Flask, render_template, request, send_from_directory
 import pickle
@@ -332,10 +333,13 @@ model_path = 'models/pickle_rf.pkl.gz'
 
 import os
 
-app.config['UPLOAD_FOLDER'] = 'uploads'  # Folder in the same directory as app.py
+# Path to the folder where uploaded files will be saved
+UPLOAD_FOLDER = 'static/uploads'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-
-
+# Ensure the directory exists
+if not os.path.exists(UPLOAD_FOLDER):
+    os.makedirs(UPLOAD_FOLDER)
 
 
 # Load the trained GradientBoosting model from the compressed pickle file
@@ -389,15 +393,21 @@ def upload_file():
             df['Status'] = (y_prob_holdout >= 0.5).astype(int)
             df['Status'] = df['Status'].map({1: 'Delayed', 0: 'On Time'})
 
-            uploads_dir = os.path.join(app.root_path, 'uploads')
-            if not os.path.exists(uploads_dir):
-                os.makedirs(uploads_dir)
-                print(f"Created directory: {uploads_dir}")
+
+ # Create a dynamic directory based on the current timestamp or file name
+            timestamp = int(time.time())
+            dynamic_dir = os.path.join(app.config['UPLOAD_FOLDER'], str(timestamp))
+            if not os.path.exists(dynamic_dir):
+                os.makedirs(dynamic_dir)
+                print(f"Created dynamic directory: {dynamic_dir}")
 
             # Save the processed DataFrame as a new CSV file
-            output_filepath = os.path.join('static', 'uploads', 'processed_file.csv')  # Save in the 'uploads' folder
-            df.to_csv(output_filepath, index=False)
+            output_filepath = os.path.join(dynamic_dir, 'processed_file.csv')
+            processed_data.to_csv(output_filepath, index=False)
             print(f"Processed file saved to {output_filepath}")
+
+            # Return a link to download the processed file
+            return render_template('results.html', filename=f"{timestamp}/processed_file.csv")
 
             # output_file_path = os.path.join('static', 'processed_data.csv')  # Save in a static folder or any location of your choice
             # df.to_csv(output_file_path, index=False)
@@ -415,8 +425,8 @@ def upload_file():
             # prediction = f"{delay_percentage:.2f}% potential of truck getting delayed"
             # predictions.append((prediction, status))
 
-            print(f"Predictions: {predictions}")  # See the final predictions
-            return render_template('results.html', predictions=predictions)
+            # print(f"Predictions: {predictions}")  # See the final predictions
+            # return render_template('results.html', predictions=predictions)
 
         except Exception as e:
             print(f"Error during prediction: {e}")
@@ -425,11 +435,11 @@ def upload_file():
         return render_template('error.html', error_message="Invalid file format. Please upload a CSV file.")
 
 
-
-app.route('/download/<filename>')
+@app.route('/download/<path:filename>')
 def download_file(filename):
     # Ensure the file exists in the 'static/uploads' directory
     return send_from_directory(os.path.join(app.root_path, 'static', 'uploads'), filename)
+
 
 
 if __name__ == '__main__':
