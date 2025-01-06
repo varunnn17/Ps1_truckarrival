@@ -321,7 +321,7 @@
 import os
 import time
 import pandas as pd
-from flask import Flask, render_template, request, send_from_directory
+from flask import Flask, render_template, request, send_file
 import pickle
 import gzip
 from feature_engineering import preprocess_and_engineer_features  # Import feature engineering
@@ -437,8 +437,11 @@ def upload_file():
 
 @app.route('/download/<path:filename>')
 def download_file(filename):
-    # Ensure the file exists in the 'static/uploads' directory
-    return send_from_directory(os.path.join(app.root_path, 'static', 'uploads'), filename)
+    file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+    if os.path.exists(file_path):
+        return send_file(file_path, as_attachment=True)
+    else:
+        return render_template('error.html', error_message="File not found.")
 
 
 
