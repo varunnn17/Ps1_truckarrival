@@ -33,7 +33,7 @@
 </body>
 </html> -->
 
-
+<!-- 
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -61,5 +61,20 @@
     </table>
     <a href="{{ url_for('index') }}">Upload another file</a>
 </body>
-</html>
+</html> -->
 
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediction Results</title>
+</head>
+<body>
+    <h1>Prediction Results</h1>
+    <p>Results have been processed successfully. You can download the processed CSV file from the link below:</p>
+    
+    <a href="{{ download_link }}" download>Download Processed CSV</a>
+</body>
+</html>

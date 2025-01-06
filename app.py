@@ -320,7 +320,7 @@
 
 import os
 import pandas as pd
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, send_file
 import pickle
 import gzip
 from feature_engineering import preprocess_and_engineer_features  # Import feature engineering
@@ -386,12 +386,17 @@ def upload_file():
                 # Ensure the model can make predictions with the processed data
             y_prob_holdout = model.predict_proba(processed_data)[:, 1]
             df['Percentage'] = y_prob_holdout * 100
-            df['Status'] = (df['Delay_Percentage'] >= 50).map({True: 'Delayed', False: 'On Time'})
+            df['Status'] = (y_prob_holdout >= 0.5).astype(int)
+            df['Status'] = df['Status'].map({1: 'Delayed', 0: 'On Time'})
+
+            output_file_path = os.path.join('static', 'processed_data.csv')  # Save in a static folder or any location of your choice
+            df.to_csv(output_file_path, index=False)
+            print(f"Processed file saved to {output_file_path}")
 
             # Save the processed CSV with predictions
-            output_filename = f"predictions_{file.filename}"
-            processed_file_path = os.path.join(app.config['UPLOAD_FOLDER'], output_filename)  # Make sure to specify a folder for saving files
-            df.to_csv(processed_file_path, index=False)
+            # output_filename = f"predictions_{file.filename}"
+            # processed_file_path = os.path.join(app.config['UPLOAD_FOLDER'], output_filename)  # Make sure to specify a folder for saving files
+            # df.to_csv(processed_file_path, index=False)
 
 
             # delay_percentage = y_prob_holdout[0] * 100
@@ -408,6 +413,18 @@ def upload_file():
             return render_template('error.html', error_message="An error occurred during prediction.")
     else:
         return render_template('error.html', error_message="Invalid file format. Please upload a CSV file.")
+
+
+
+@app.route('/download', methods=['GET'])
+def download_file():
+    file_path = os.path.join('static', 'processed_data.csv')  # Path to the processed CSV file
+    try:
+        return send_file(file_path, as_attachment=True)
+    except Exception as e:
+        print(f"Error sending file: {e}")
+        return render_template('error.html', error_message="Error during file download.")
+
 
 if __name__ == '__main__':
     app.run(debug=True)
