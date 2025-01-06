@@ -389,9 +389,19 @@ def upload_file():
             df['Status'] = (y_prob_holdout >= 0.5).astype(int)
             df['Status'] = df['Status'].map({1: 'Delayed', 0: 'On Time'})
 
-            output_file_path = os.path.join('static', 'processed_data.csv')  # Save in a static folder or any location of your choice
+            uploads_dir = os.path.join(app.root_path, 'uploads')
+            if not os.path.exists(uploads_dir):
+                os.makedirs(uploads_dir)
+                print(f"Created directory: {uploads_dir}")
+
+            # Save the processed DataFrame as a new CSV file
+            output_file_path = os.path.join(uploads_dir, 'processed_data.csv')  # Save in the 'uploads' folder
             df.to_csv(output_file_path, index=False)
             print(f"Processed file saved to {output_file_path}")
+
+            # output_file_path = os.path.join('static', 'processed_data.csv')  # Save in a static folder or any location of your choice
+            # df.to_csv(output_file_path, index=False)
+            # print(f"Processed file saved to {output_file_path}")
 
             # Save the processed CSV with predictions
             # output_filename = f"predictions_{file.filename}"
@@ -418,7 +428,8 @@ def upload_file():
 
 @app.route('/download', methods=['GET'])
 def download_file():
-    file_path = os.path.join('static', 'processed_data.csv')  # Path to the processed CSV file
+    # Path to the processed CSV file in 'uploads' folder
+    file_path = os.path.join('uploads', 'processed_data.csv')
     try:
         return send_file(file_path, as_attachment=True)
     except Exception as e:
