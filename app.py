@@ -164,7 +164,8 @@ import gzip
 from feature_engineering import preprocess_and_engineer
 
 # Path to the compressed model file (pickle_gb.pkl.gz)
-model_path = r"C:\Users\gopalv\Desktop\Truckarrival-Render\pickle_gb.pkl.gz"
+model_path = 'models/pickle_gb.pkl.gz'
+
 
 # Load the trained GradientBoosting model from the compressed pickle file
 try:
