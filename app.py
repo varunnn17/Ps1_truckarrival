@@ -107,6 +107,8 @@ import pandas as pd
 from flask import Flask, render_template, request, send_file
 import pickle
 import gzip
+import importlib
+
 #from feature_engineering import preprocess_and_engineer_features  # Import original feature engineering function
 
 app = Flask(__name__)
@@ -132,6 +134,7 @@ try:
 except Exception as e:
     print(f"Error loading model: {e}")
 
+feature_engineering = importlib.import_module('feature_engineering')
 # Load the feature engineering function under a new name
 try:
     with open('models/preprocessing_pipeline.pkl', 'rb') as f:
