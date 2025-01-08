@@ -136,18 +136,17 @@ except Exception as e:
 
 # feature_engineering = importlib.import_module('feature_engineering')
 # Load the feature engineering function under a new name
-preprocessing_path = os.path.join('models', 'preprocessing_pipeline.pkl')
-loaded_preprocessing_function = None
-try:
-    with open(preprocessing_path, 'rb') as f:
-        loaded_preprocessing_function = pickle.load(f)
-    print("Preprocessing function loaded successfully as 'loaded_preprocessing_function'")
-except Exception as e:
-    print(f"Error loading preprocessing function: {e}")
-    raise
+import pickle
 
-if loaded_preprocessing_function is None:
-    raise ValueError("Preprocessing function failed to load.")
+def load_preprocessor(filename='models\preprocessing_pipeline.pkl'):
+    try:
+        with open(filename, 'rb') as f:
+            preprocessor = pickle.load(f)
+        return preprocessor
+    except Exception as e:
+        print(f"Error loading preprocessor: {e}")
+        return None
+preprocessor = load_preprocessor()
 
 @app.route('/')
 def index():
@@ -176,7 +175,7 @@ def upload_file():
                 return render_template('error.html', error_message=f"Missing columns: {', '.join(missing_columns)}")
 
             # Process the data using the loaded preprocessing function
-            processed_data = loaded_preprocessing_function(df)  # Feature engineering
+            processed_data = preprocessor(df)  # Feature engineering
             print(f"Processed Data:\n{processed_data}")  # Print processed data
 
             # Predict the probability of delay and add columns to the DataFrame
