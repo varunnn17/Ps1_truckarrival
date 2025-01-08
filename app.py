@@ -138,15 +138,16 @@ except Exception as e:
 # Load the feature engineering function under a new name
 import pickle
 
-def load_preprocessor(filename='models/preprocessing_pipeline.pkl'):
-    try:
-        with open(filename, 'rb') as f:
-            preprocessor = pickle.load(f)
-        return preprocessor
-    except Exception as e:
-        print(f"Error loading preprocessor: {e}")
-        return None
-preprocessor = load_preprocessor()
+filename='models/preprocessing_pipeline.pkl'
+
+try:
+    with open(filename, 'rb') as f:
+        preprocessor = pickle.load(f)
+    print("preprocessor pickle loaded successfully")    
+except Exception as e:
+    print(f"Error loading preprocessor: {e}")
+    
+
 
 @app.route('/')
 def index():

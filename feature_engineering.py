@@ -141,19 +141,16 @@ def preprocess_and_engineer_features(df):
     df = df[required_columns]
     return df
 
-# # Save the function as a pickle
+# Save the function as a pickle
 # if __name__ == "__main__":
-#     # Example for saving this function into a pickle file
-#     import pickle
+    # Example for saving this function into a pickle file
+import pickle
 
-#     # Pickle the preprocess function
-#     with open('preprocessing_pipeline.pkl', 'wb') as f:
-#         pickle.dump(preprocess_and_engineer_features, f)
+    # Pickle the preprocess function
+with open('preprocessing_pipeline.pkl', 'wb') as f:
+    pickle.dump(preprocess_and_engineer_features, f)
 
-#     print("Preprocessing function pickled successfully.")
+print("Preprocessing function pickled successfully.")
 
 
-def save_preprocessor(preprocessor, filename='models/preprocessing_pipeline.pkl'):
-    # Pickle the preprocessor function or transformations used for feature engineering
-    with open(filename, 'wb') as f:
-        pickle.dump(preprocessor, f)
+
