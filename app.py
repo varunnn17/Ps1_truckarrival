@@ -138,7 +138,7 @@ except Exception as e:
 # Load the feature engineering function under a new name
 import pickle
 
-def load_preprocessor(filename='models\preprocessing_pipeline.pkl'):
+def load_preprocessor(filename='models/preprocessing_pipeline.pkl'):
     try:
         with open(filename, 'rb') as f:
             preprocessor = pickle.load(f)
