@@ -136,6 +136,7 @@ except Exception as e:
 
 # feature_engineering = importlib.import_module('feature_engineering')
 # Load the feature engineering function under a new name
+loaded_preprocessing_function = None
 try:
     with open('models/preprocessing_pipeline.pkl', 'rb') as f:
         loaded_preprocessing_function = pickle.load(f)
