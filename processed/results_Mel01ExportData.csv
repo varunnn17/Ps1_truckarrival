@@ -1,4 +1,4 @@
-Date,Trip Nr,Ordertype,PlannedDateTime,ArrivedDateTime,PlannedDay,PlannedHour,CustomerID,RelationID,CarrierID,NumberOfOrders,Percentage,Status
+Date,Trip Nr,Ordertype,PlannedDateTime,ArrivedDateTime,PlannedDay,PlannedHour,CustomerID,RelationID,CarrierID,NumberOfOrders,Delay_Percentage,Status
 1/02/2023 0:00,428032,SO,1/02/2023 20:00,1/02/2023 20:33,4,20,7,201,90,1,21.580952380952382,On Time
 1/02/2023 0:00,428036,SO,1/02/2023 4:02,1/02/2023 2:48,4,4,4,547,62,1,15.305555555555555,On Time
 1/02/2023 0:00,428037,SO,1/02/2023 6:02,1/02/2023 6:46,4,6,4,559,62,1,89.15978535353534,Delayed
