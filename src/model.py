@@ -18,8 +18,3 @@ def predict_delay(model, data):
     return model.predict_proba(data)[:, 1] * 100
 
 
-#     with gzip.open(model_path, 'rb') as file:
-#         model = pickle.load(file)
-#     print("Model loaded successfully")
-# except Exception as e:
-#     print(f"Error loading model: {e}")

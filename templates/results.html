@@ -4,16 +4,50 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Upload Results</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        h1 {
+            color: #333;
+        }
+        p {
+            color: #555;
+            margin-bottom: 20px;
+        }
+        a {
+            text-decoration: none;
+            color: #007bff;
+            margin: 5px;
+            padding: 8px 12px;
+            border: 1px solid #007bff;
+            border-radius: 4px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        a:hover {
+            background-color: #007bff;
+            color: white;
+        }
+        .navigation-links {
+            display: flex;
+            gap: 10px;
+        }
+    </style>
 </head>
 <body>
     <h1>Processing Complete</h1>
     <p>{{ message }}</p>
 
-    <a href="{{ url_for('download_file', filename=file_name) }}">Download processed file</a>
-
-
-    <a href="{{ url_for('index') }}">Go back to Home</a>
-
-    
+    <div class="navigation-links">
+        <a href="{{ url_for('download_file', filename=file_name) }}">Download processed file</a>
+        <a href="{{ url_for('index') }}">Go back to Home</a>
+    </div>
 </body>
 </html>
