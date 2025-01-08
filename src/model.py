@@ -3,7 +3,7 @@ import gzip
 import pickle
 # from joblib import load
 
-MODEL_PATH = 'models/pickle_rf.pkl.gz.'
+MODEL_PATH = 'models/pickle_rf.pkl.gz'
 # Load the trained model from file
 def load_model():
 # Load the compressed model
