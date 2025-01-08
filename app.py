@@ -136,14 +136,18 @@ except Exception as e:
 
 # feature_engineering = importlib.import_module('feature_engineering')
 # Load the feature engineering function under a new name
+preprocessing_path = os.path.join('models', 'preprocessing_pipeline.pkl')
 loaded_preprocessing_function = None
 try:
-    with open('models/preprocessing_pipeline.pkl', 'rb') as f:
+    with open(preprocessing_path, 'rb') as f:
         loaded_preprocessing_function = pickle.load(f)
     print("Preprocessing function loaded successfully as 'loaded_preprocessing_function'")
 except Exception as e:
     print(f"Error loading preprocessing function: {e}")
+    raise
 
+if loaded_preprocessing_function is None:
+    raise ValueError("Preprocessing function failed to load.")
 
 @app.route('/')
 def index():
